@@ -1,17 +1,33 @@
 package com.example.notes.db
 
 import androidx.room.*
-import com.example.notes.db.entities.Category
-import com.example.notes.db.entities.Note
-import com.example.notes.db.entities.Priority
+import com.example.notes.db.entities.*
 
 @Dao
 interface NoteDao {
-    @Query("SELECT * FROM notes")
+    @Query("SELECT * FROM notes WHERE id NOT IN (SELECT noteId FROM pinned_notes)")
     suspend fun getAll(): List<Note>
+
+    @Query("SELECT * FROM notes WHERE id IN (SELECT noteId FROM pinned_notes)")
+    fun getPinnedNotes(): List<Note>
+
+    @Query("DELETE FROM pinned_notes WHERE noteId = :noteId")
+    fun unpinNote(noteId: Int)
+
+    @Query("SELECT * FROM notes WHERE category_id = :id")
+    suspend fun getByCategoryId(id: Int) : List<Note>
+
+    @Query("SELECT * FROM (SELECT * FROM notes WHERE id IN (SELECT noteId FROM pinned_notes)) WHERE category_id = :id")
+    suspend fun getPinnedByCategoryId(id: Int) : List<Note>
+
+    @Query("SELECT * FROM notes WHERE id = :noteId")
+    suspend fun getById(noteId: Int) : Note
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(note: Note)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertPinned(pinnedNote: PinnedNote): Long
 
     @Query("DELETE FROM notes WHERE id = :noteId")
     suspend fun deleteById(noteId: Int)
@@ -22,6 +38,7 @@ interface NoteDao {
     @Update
     suspend fun update(note: Note)
 }
+
 
 @Dao
 interface CategoryDao {
@@ -38,23 +55,5 @@ interface CategoryDao {
     suspend fun deleteById(categoryId: Int)
 
     @Query("DELETE FROM categories")
-    suspend fun deleteAll()
-}
-
-@Dao
-interface PriorityDao {
-    @Query("SELECT * FROM priorities")
-    suspend fun getAll(): List<Priority>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(priority: Priority)
-
-    @Query("SELECT * FROM priorities WHERE id = :priorityId")
-    suspend fun getById(priorityId: Int) : Category
-
-    @Query("DELETE FROM priorities WHERE id = :priorityId")
-    suspend fun deleteById(priorityId: Int)
-
-    @Query("DELETE FROM priorities")
     suspend fun deleteAll()
 }

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Notes</string>
     <string name="add">Add</string>
+    <string name="pinned">Закрепленные</string>
+    <string name="other">Другие</string>
+    <string name="category_spinner_header">Select category</string>
 </resources>

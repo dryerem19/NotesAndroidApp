@@ -12,24 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
+        android:hint="Title"
         android:textStyle="bold"
-        android:textColor="@color/white"
+        android:textColor="#EDC7B7"
         android:fontFamily="sans-serif"/>
 
     <TextView
-        android:id="@+id/textViewPriority"
+        android:id="@+id/note_date_created"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@color/white"
-        android:fontFamily="sans-serif"/>
-
-    <TextView
-        android:id="@+id/textViewCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textColor="@color/black"
         android:fontFamily="sans-serif"/>
 
 </LinearLayout>

@@ -7,14 +7,15 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.notes.db.entities.Category
 import com.example.notes.db.entities.Note
+import com.example.notes.db.entities.PinnedNote
 import com.example.notes.db.entities.Priority
 
-@Database(entities = [Note::class, Category::class, Priority::class], version = 1)
+@Database(entities = [Note::class, Category::class,
+                     PinnedNote::class], version = 5)
 abstract class NoteDatabase : RoomDatabase() {
 
     abstract fun noteDao(): NoteDao
     abstract fun categoryDao(): CategoryDao
-    abstract fun priorityDao(): PriorityDao
 
     companion object {
         private const val DATABASE_NAME = "note_database"
